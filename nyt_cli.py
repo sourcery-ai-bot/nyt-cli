@@ -16,12 +16,14 @@ def top_stories(section, api_key, count):
     }
 
     response = requests.get(url, params=query_params)
-    stories = []
-    for i in range(0, count if count <= 10 else 10):
-        stories.append((response.json()['results'][i]['title'],
-                        response.json()['results'][i]['byline'],
-                        response.json()['results'][i]['url']))
-    return stories
+    return [
+        (
+            response.json()['results'][i]['title'],
+            response.json()['results'][i]['byline'],
+            response.json()['results'][i]['url'],
+        )
+        for i in range(count if count <= 10 else 10)
+    ]
 
 
 @click.command()
